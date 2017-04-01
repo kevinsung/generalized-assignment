@@ -2,7 +2,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 def getLPSol(p, c, T):
-    """ Get a solution to the LP. There are n jobs and m machines
+    """
+    Get a solution to the LP. There are n jobs and m machines
     Inputs:
         p: an mxn matrix
         c: an mxn matrix
@@ -11,17 +12,23 @@ def getLPSol(p, c, T):
     """
     return 0
 
-def roundLPSol(x):
-    """ Round an LP solution to an integer solution
+def buildGraph(x):
+    """
+    Convert an LP solution to a bipartite graph where one side
+    represents jobs and the other side represents slots
     Inputs:
         x: an mxn matrix
-    Output: an mxn matrix
+    Output: a 3-d array B. B[j,i,s] represents weight on edge
+    from job j to slot s of machine i.
     """
-
-def main():
-    fig = plt.gcf()
-    ax = plt.gca()
     return 0
 
-if __name__ == '__main__':
-    main()
+def roundLPSol(x):
+    """
+    Round an LP solution to an integer solution
+    Inputs:
+        x: an mxn matrix representing a fractional assignment
+    Output: an mxn matrix
+    """
+    B = buildGraph(x)
+    return 0
