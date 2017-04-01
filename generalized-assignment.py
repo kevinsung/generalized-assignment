@@ -45,7 +45,7 @@ def getLPSol(p, c, T):
 
     # get LP solution
     res = linprog(d, A_ub=A_ub, b_ub=b_ub, A_eq=A_eq, b_eq=b_eq, bounds=bounds)
-    return res
+    return np.reshape(res.x, (m, n))
 
 def buildGraph(x):
     """
@@ -72,8 +72,8 @@ def main():
     p = np.array([[4,4,4],[5,5,5],[5,4,4]])
     c = np.array([[4,4,4],[5,5,5],[5,4,4]])
     T = 50
-    res = getLPSol(p, c, T)
-    print(res)
+    x = getLPSol(p, c, T)
+    print(x)
 
 if __name__ == '__main__':
     main()
