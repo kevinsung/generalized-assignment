@@ -80,7 +80,7 @@ def buildGraph(x, p):
                 B[j, i, s] = left       # fill up current slot
                 s += 1                  # increment slot
                 B[j, i, s] = y - left   # put remaining weight in new slot
-                left = 1 - (y - left)   # update space left new slot
+                left = 1 - (y - left)   # update space left in new slot
 
     return B
 
