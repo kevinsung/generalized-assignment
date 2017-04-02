@@ -47,16 +47,40 @@ def getLPSol(p, c, T):
     res = linprog(d, A_ub=A_ub, b_ub=b_ub, A_eq=A_eq, b_eq=b_eq, bounds=bounds)
     return np.reshape(res.x, (m, n))
 
-def buildGraph(x):
+def buildGraph(x, p):
     """
-    Convert an LP solution to a bipartite graph where one side
-    represents jobs and the other side represents slots
+    Convert an LP solution to a bipartite graph with fractional
+    edge weights where one side represents jobs and the other side
+    represents slots
     Inputs:
         x: an mxn matrix
-    Output: a 3-d array B. B[j, i, s] represents weight on edge
-    from job j to slot s of machine i.
+        p: an mxn matrix
+    Output: a nxmxn array B, where B[j, i, s] represents the weight
+    on the edge from job j to slot s of machine i.
     """
-    return 0
+    m = x.shape[0]
+    n = x.shape[1]
+
+    B = np.zeros((n, m, n))
+
+    for i in range(m):
+        s = 0       # current slot in machine i
+        left = 1    # space left in current slot
+        x_indices = np.argsort(-p[i]) # indices of x when p_i is in nondecreasing order
+        for j in x_indices:
+            y = x[i, j]
+            if y <= left:
+                # we can fit this job into slot s
+                B[j, i, s] = y
+                left -= y
+            else:
+                # we need to split this job into two slots
+                B[j, i, s] = left       # fill up current slot
+                s += 1                  # increment slot
+                B[j, i, s] = y - left   # put remaining weight in new slot
+                left = 1 - (y - left)   # update space left new slot
+
+    return B
 
 def roundLPSol(x):
     """
@@ -73,7 +97,8 @@ def main():
     c = np.array([[4,4,4],[5,5,5],[5,4,4]])
     T = 50
     x = getLPSol(p, c, T)
-    print(x)
+    B = buildGraph(x, p)
+    print(B)
 
 if __name__ == '__main__':
     main()
