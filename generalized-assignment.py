@@ -54,7 +54,9 @@ def buildGraph(x, p):
     represents slots
     Inputs:
         x: an mxn matrix
-        p: an mxn matrix
+        p: an mxn matrix. These are the job completion times.
+        It's required because we need to sort the rows
+        of x based on the entries of p.
     Output: a nxmxn array B, where B[j, i, s] represents the weight
     on the edge from job j to slot s of machine i.
     """
@@ -82,14 +84,17 @@ def buildGraph(x, p):
 
     return B
 
-def roundLPSol(x):
+def roundLPSol(x, p):
     """
     Round an LP solution to an integer solution
     Inputs:
         x: an mxn matrix representing a fractional assignment
+        p: an mxn matrix. These are the job completion times.
+        It's required because we need to sort the rows
+        of x based on the entries of p.
     Output: an mxn matrix
     """
-    B = buildGraph(x)
+    B = buildGraph(x, p)
     return 0
 
 def main():
